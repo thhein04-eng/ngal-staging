@@ -39,3 +39,6 @@ jobs:
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/docs/features/ci-features/self-healing-ci
       - run: npx nx fix-ci
         if: always()
+      - run: nx affected -t lint test build
+      # Include the task you ran locally, to make sure we get our cache hit. You can remove this later.
+      - run: nx build my-app
