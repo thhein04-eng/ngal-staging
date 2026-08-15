@@ -1,0 +1,332 @@
+<section class="page-head">
+  <div class="container">
+    <shop-section-heading
+      [level]="1"
+      eyebrow="Request a quote"
+      title="Tell us about the property"
+      lead="Fill this in and we will come back with a scope and a fixed quote, usually
+            within two business days. No obligation, and no one will call you twice."
+    />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container layout">
+    <div class="form-col">
+      @if (result(); as submitted) {
+        <div class="confirmation" role="status">
+          <p class="confirmation__icon" aria-hidden="true">✓</p>
+          <h2 class="confirmation__title">Request received</h2>
+          <p class="confirmation__body">
+            Thanks — your reference is
+            <strong>{{ submitted.reference }}</strong
+            >. We will be in touch within two business days. If it is urgent, call us on
+            <a [href]="'tel:' + telHref()">{{ company.phone }}</a
+            >.
+          </p>
+          <button type="button" class="btn btn--secondary" (click)="reset()">
+            Send another request
+          </button>
+        </div>
+      } @else {
+        <form class="form" novalidate (submit)="$event.preventDefault(); onSubmit()">
+          @if (submitFailed()) {
+            <p class="form__banner" role="alert">
+              Something went wrong sending your request. Please try again, or call us on
+              {{ company.phone }}.
+            </p>
+          }
+
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">Your details</legend>
+
+            <div class="field">
+              <label class="label" for="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                autocomplete="name"
+                class="control"
+                [formField]="quoteForm.name"
+                [class.control--invalid]="
+                  showErrors(quoteForm.name().touched(), quoteForm.name().invalid())
+                "
+                [attr.aria-invalid]="
+                  showErrors(quoteForm.name().touched(), quoteForm.name().invalid())
+                "
+                [attr.aria-describedby]="
+                  showErrors(quoteForm.name().touched(), quoteForm.name().invalid())
+                    ? 'name-error'
+                    : null
+                "
+              />
+              @if (showErrors(quoteForm.name().touched(), quoteForm.name().invalid())) {
+                <p class="error" id="name-error">
+                  {{ quoteForm.name().errors()[0]?.message }}
+                </p>
+              }
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="label" for="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  autocomplete="email"
+                  class="control"
+                  [formField]="quoteForm.email"
+                  [class.control--invalid]="
+                    showErrors(quoteForm.email().touched(), quoteForm.email().invalid())
+                  "
+                  [attr.aria-invalid]="
+                    showErrors(quoteForm.email().touched(), quoteForm.email().invalid())
+                  "
+                  [attr.aria-describedby]="
+                    showErrors(quoteForm.email().touched(), quoteForm.email().invalid())
+                      ? 'email-error'
+                      : null
+                  "
+                />
+                @if (
+                  showErrors(quoteForm.email().touched(), quoteForm.email().invalid())
+                ) {
+                  <p class="error" id="email-error">
+                    {{ quoteForm.email().errors()[0]?.message }}
+                  </p>
+                }
+              </div>
+
+              <div class="field">
+                <label class="label" for="phone">Phone</label>
+                <input
+                  id="phone"
+                  type="tel"
+                  autocomplete="tel"
+                  class="control"
+                  [formField]="quoteForm.phone"
+                  [class.control--invalid]="
+                    showErrors(quoteForm.phone().touched(), quoteForm.phone().invalid())
+                  "
+                  [attr.aria-invalid]="
+                    showErrors(quoteForm.phone().touched(), quoteForm.phone().invalid())
+                  "
+                  [attr.aria-describedby]="
+                    showErrors(quoteForm.phone().touched(), quoteForm.phone().invalid())
+                      ? 'phone-error'
+                      : null
+                  "
+                />
+                @if (
+                  showErrors(quoteForm.phone().touched(), quoteForm.phone().invalid())
+                ) {
+                  <p class="error" id="phone-error">
+                    {{ quoteForm.phone().errors()[0]?.message }}
+                  </p>
+                }
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">The property</legend>
+
+            <div class="field">
+              <label class="label" for="address">Property address</label>
+              <input
+                id="address"
+                type="text"
+                autocomplete="street-address"
+                class="control"
+                [formField]="quoteForm.propertyAddress"
+                [class.control--invalid]="
+                  showErrors(
+                    quoteForm.propertyAddress().touched(),
+                    quoteForm.propertyAddress().invalid()
+                  )
+                "
+                [attr.aria-invalid]="
+                  showErrors(
+                    quoteForm.propertyAddress().touched(),
+                    quoteForm.propertyAddress().invalid()
+                  )
+                "
+                [attr.aria-describedby]="
+                  showErrors(
+                    quoteForm.propertyAddress().touched(),
+                    quoteForm.propertyAddress().invalid()
+                  )
+                    ? 'address-error'
+                    : null
+                "
+              />
+              @if (
+                showErrors(
+                  quoteForm.propertyAddress().touched(),
+                  quoteForm.propertyAddress().invalid()
+                )
+              ) {
+                <p class="error" id="address-error">
+                  {{ quoteForm.propertyAddress().errors()[0]?.message }}
+                </p>
+              }
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="label" for="propertyType">Property type</label>
+                <select id="propertyType" class="control" [formField]="quoteForm.propertyType">
+                  @for (type of propertyTypes; track type.value) {
+                    <option [value]="type.value">{{ type.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label class="label" for="squareFeet">Approximate size (sq ft)</label>
+                <input
+                  id="squareFeet"
+                  type="number"
+                  inputmode="numeric"
+                  class="control"
+                  [formField]="quoteForm.squareFeet"
+                  [class.control--invalid]="
+                    showErrors(
+                      quoteForm.squareFeet().touched(),
+                      quoteForm.squareFeet().invalid()
+                    )
+                  "
+                  [attr.aria-invalid]="
+                    showErrors(
+                      quoteForm.squareFeet().touched(),
+                      quoteForm.squareFeet().invalid()
+                    )
+                  "
+                  [attr.aria-describedby]="
+                    showErrors(
+                      quoteForm.squareFeet().touched(),
+                      quoteForm.squareFeet().invalid()
+                    )
+                      ? 'squareFeet-error'
+                      : null
+                  "
+                />
+                @if (
+                  showErrors(
+                    quoteForm.squareFeet().touched(),
+                    quoteForm.squareFeet().invalid()
+                  )
+                ) {
+                  <p class="error" id="squareFeet-error">
+                    {{ quoteForm.squareFeet().errors()[0]?.message }}
+                  </p>
+                }
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset__legend">What you need</legend>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="label" for="service">Package</label>
+                <select id="service" class="control" [formField]="quoteForm.service">
+                  @for (service of services; track service.id) {
+                    <option [value]="service.id">{{ service.name }}</option>
+                  }
+                </select>
+                <p class="hint">Not sure? Pick the closest — we will advise.</p>
+              </div>
+
+              <div class="field">
+                <label class="label" for="timeline">Timeline</label>
+                <select id="timeline" class="control" [formField]="quoteForm.timeline">
+                  @for (option of timelines; track option.value) {
+                    <option [value]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label" for="message">Anything else? (optional)</label>
+              <textarea
+                id="message"
+                rows="5"
+                class="control"
+                [formField]="quoteForm.message"
+                aria-describedby="message-count"
+              ></textarea>
+              <p class="hint" id="message-count">{{ messageCount() }} / 1200 characters</p>
+            </div>
+          </fieldset>
+
+          <div class="field field--check">
+            <input
+              id="consent"
+              type="checkbox"
+              class="checkbox"
+              [formField]="quoteForm.consent"
+              [attr.aria-invalid]="
+                showErrors(quoteForm.consent().touched(), quoteForm.consent().invalid())
+              "
+              [attr.aria-describedby]="
+                showErrors(quoteForm.consent().touched(), quoteForm.consent().invalid())
+                  ? 'consent-error'
+                  : null
+              "
+            />
+            <label for="consent">
+              You can contact me about this request. We will not add you to a mailing
+              list.
+            </label>
+          </div>
+          @if (showErrors(quoteForm.consent().touched(), quoteForm.consent().invalid())) {
+            <p class="error" id="consent-error">
+              {{ quoteForm.consent().errors()[0]?.message }}
+            </p>
+          }
+
+          <button type="submit" class="btn btn--primary submit" [disabled]="submitting()">
+            {{ submitting() ? 'Sending…' : 'Send request' }}
+          </button>
+        </form>
+      }
+    </div>
+
+    <aside class="aside">
+      <h2 class="aside__title">Rather just talk?</h2>
+      <ul class="aside__list">
+        <li>
+          <span class="aside__label">Phone</span>
+          <a [href]="'tel:' + telHref()">{{ company.phone }}</a>
+        </li>
+        <li>
+          <span class="aside__label">Email</span>
+          <a [href]="'mailto:' + company.email">{{ company.email }}</a>
+        </li>
+        <li>
+          <span class="aside__label">Studio</span>
+          <address class="aside__address">
+            {{ company.street }}<br />
+            {{ company.city }}, {{ company.state }} {{ company.postalCode }}
+          </address>
+        </li>
+        <li>
+          <span class="aside__label">Hours</span>
+          <span>{{ company.hours }}</span>
+        </li>
+      </ul>
+
+      <div class="aside__note">
+        <h3>What happens next</h3>
+        <ol>
+          <li>We read your request and check the listing if it is already live.</li>
+          <li>We reply with a scope, a fixed quote, and available install dates.</li>
+          <li>If it looks right, we book a walkthrough.</li>
+        </ol>
+      </div>
+    </aside>
+  </div>
+</section>

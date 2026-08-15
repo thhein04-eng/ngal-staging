@@ -1,0 +1,199 @@
+/* Hero -------------------------------------------------------------------- */
+
+.hero {
+  background: var(--nl-cream);
+  border-bottom: 1px solid var(--nl-line);
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+.hero__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--nl-forest);
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--nl-font-display);
+  font-size: var(--nl-size-h1);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.hero__lead {
+  max-width: 48ch;
+  margin: 1.5rem 0 0;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--nl-ink-muted);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero__media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--nl-radius);
+  box-shadow: var(--nl-shadow-md);
+}
+
+/* Sections ---------------------------------------------------------------- */
+
+.compare {
+  margin-top: 2.5rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+/* Four packages: one row on desktop, 2x2 on tablet, stacked on phones. */
+.grid--services {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid--projects {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+/* Four quotes read better as 2x2 than as a row of three plus an orphan. */
+.grid--testimonials {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 68rem) {
+  .grid--services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .grid--services,
+  .grid--testimonials {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid__footnote {
+  margin: 2rem 0 0;
+  font-weight: 600;
+}
+
+/* Process ----------------------------------------------------------------- */
+
+.process {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 2rem;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.process__step {
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--nl-line-strong);
+}
+
+.process__num {
+  margin: 0 0 0.75rem;
+  font-family: var(--nl-font-display);
+  font-size: 1.5rem;
+  color: var(--nl-forest);
+}
+
+.process__title {
+  margin: 0;
+  font-family: var(--nl-font-display);
+  font-size: 1.25rem;
+}
+
+.process__duration {
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--nl-ink-muted);
+}
+
+.process__body {
+  margin: 0.85rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--nl-ink-muted);
+}
+
+/* Recent work tiles ------------------------------------------------------- */
+
+.mini {
+  overflow: hidden;
+  border: 1px solid var(--nl-line);
+  border-radius: var(--nl-radius);
+  background: var(--nl-surface);
+}
+
+.mini__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--nl-sand);
+}
+
+.mini__media img {
+  object-fit: cover;
+}
+
+.mini__body {
+  padding: 1.25rem;
+}
+
+.mini__title {
+  margin: 0;
+  font-family: var(--nl-font-display);
+  font-size: 1.1875rem;
+}
+
+.mini__meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--nl-ink-muted);
+}
+
+.mini__stat {
+  margin: 0.9rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--nl-ink-muted);
+}
+
+.mini__stat strong {
+  color: var(--nl-forest);
+}
+
+@media (max-width: 56rem) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__media {
+    order: -1;
+  }
+}

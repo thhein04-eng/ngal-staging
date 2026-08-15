@@ -1,38 +1,184 @@
-/* Global Styles */
-* {
+/* ==========================================================================
+   Northlight Home Staging — global styles and design tokens
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --nl-forest: #2f5d50;
+  --nl-forest-dark: #234840;
+  --nl-clay: #b5714a;
+
+  /* Text */
+  --nl-ink: #23211e;
+  --nl-ink-muted: #5f5a52;
+
+  /* Surfaces */
+  --nl-cream: #faf7f2;
+  --nl-sand: #f0eae0;
+  --nl-surface: #ffffff;
+
+  /* Lines */
+  --nl-line: #e3ddd2;
+  --nl-line-strong: #c8c0b2;
+
+  --nl-focus: #2f5d50;
+
+  /* Type */
+  --nl-font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
+    'Times New Roman', serif;
+  --nl-font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --nl-size-h1: clamp(2.5rem, 6vw, 4rem);
+  --nl-size-h2: clamp(1.875rem, 4vw, 2.75rem);
+
+  /* Layout */
+  --nl-container: 72rem;
+  --nl-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --nl-section: clamp(3.5rem, 8vw, 6.5rem);
+
+  --nl-radius: 14px;
+  --nl-radius-sm: 8px;
+  --nl-shadow-md: 0 10px 30px rgb(35 33 30 / 0.09);
+}
+
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--nl-font-body);
+  font-size: 1rem;
   line-height: 1.6;
-  color: #333;
-  background: #f5f5f5;
+  color: var(--nl-ink);
+  background: var(--nl-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  line-height: 1.2;
 }
 
 a {
-  color: #3498db;
-  text-decoration: none;
+  color: var(--nl-forest);
 }
 
 a:hover {
   text-decoration: underline;
 }
 
-button {
-  font-family: inherit;
-}
-
+button,
 input,
 select,
 textarea {
-  font-family: inherit;
+  font: inherit;
+  color: inherit;
 }
 
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* A single, consistent focus treatment across the whole site. */
+:focus-visible {
+  outline: 3px solid var(--nl-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Utilities ------------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  max-width: var(--nl-container);
+  margin-inline: auto;
+  padding-inline: var(--nl-gutter);
+}
+
+.section {
+  padding-block: var(--nl-section);
+}
+
+.section--tint {
+  background: var(--nl-sand);
+}
+
+.section--surface {
+  background: var(--nl-surface);
+}
+
+/* Shared button styles used by page templates. */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--nl-radius-sm);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: var(--nl-forest);
+  border-color: var(--nl-forest);
+  color: #fff;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--nl-forest-dark);
+  border-color: var(--nl-forest-dark);
+}
+
+.btn--secondary {
+  border-color: var(--nl-line-strong);
+  color: var(--nl-ink);
+  background: transparent;
+}
+
+.btn--secondary:hover {
+  border-color: var(--nl-ink);
+  background: var(--nl-surface);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

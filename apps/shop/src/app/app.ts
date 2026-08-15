@@ -1,13 +1,19 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { SiteFooterComponent, SiteHeaderComponent } from '@org/shop/shared-ui';
+import { StagingContentService } from '@org/shop/data';
 
 @Component({
-  imports: [RouterModule],
   selector: 'app-root',
+  imports: [RouterOutlet, SiteHeaderComponent, SiteFooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  protected title = 'Nx Shop Demo';
+  private readonly content = inject(StagingContentService);
+
+  protected readonly company = this.content.company;
+  protected readonly serviceAreas = this.content.serviceAreas;
+  /** Resolved once at construction so server and client markup agree. */
+  protected readonly year = new Date().getFullYear();
 }

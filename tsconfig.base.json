@@ -17,11 +17,18 @@
       "@org/api/products": ["./packages/api/products/src/index.ts"],
       "@org/models": ["./packages/shared/models/src/index.ts"],
       "@org/shop/data": ["./packages/shop/data/src/index.ts"],
-      "@org/shop/feature-product-detail": [
-        "./packages/shop/feature-product-detail/src/index.ts"
+      "@org/shop/feature-about": [
+        "./packages/shop/feature-about/src/index.ts"
       ],
-      "@org/shop/feature-products": [
-        "./packages/shop/feature-products/src/index.ts"
+      "@org/shop/feature-contact": [
+        "./packages/shop/feature-contact/src/index.ts"
+      ],
+      "@org/shop/feature-home": ["./packages/shop/feature-home/src/index.ts"],
+      "@org/shop/feature-portfolio": [
+        "./packages/shop/feature-portfolio/src/index.ts"
+      ],
+      "@org/shop/feature-services": [
+        "./packages/shop/feature-services/src/index.ts"
       ],
       "@org/shop/shared-ui": ["./packages/shop/shared-ui/src/index.ts"]
     }

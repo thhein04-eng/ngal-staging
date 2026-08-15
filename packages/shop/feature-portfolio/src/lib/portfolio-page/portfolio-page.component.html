@@ -1,0 +1,85 @@
+<section class="page-head">
+  <div class="container">
+    <shop-section-heading
+      [level]="1"
+      eyebrow="Portfolio"
+      title="Homes we staged, and how they did"
+      lead="Every project below is a real scope we ran: what the room looked like when we
+            arrived, what we changed, and how quickly the listing went pending."
+    />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="Transformations"
+      title="Drag to compare"
+      lead="Same room, same time of day. The only variable is the staging."
+    />
+
+    <div class="showcase">
+      @for (project of showcase(); track project.id; let first = $first) {
+        <div class="showcase__item">
+          <shop-before-after
+            [beforeImage]="project.beforeImage"
+            [afterImage]="project.afterImage"
+            [beforeAlt]="project.title + ' before staging'"
+            [afterAlt]="project.title + ' after staging'"
+            [priority]="first"
+            [label]="'Drag to compare ' + project.title + ' before and after staging'"
+          />
+          <div class="showcase__meta">
+            <h3 class="showcase__title">{{ project.title }}</h3>
+            <p class="showcase__body">{{ project.summary }}</p>
+            <p class="showcase__stat">
+              Went pending in <strong>{{ project.daysOnMarket }} days</strong> ·
+              {{ project.neighborhood }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <shop-section-heading eyebrow="All work" title="Browse the archive" />
+
+    <div class="filters">
+      <h3 class="filters__label" id="filter-label">Filter by package</h3>
+      <div class="filters__buttons" role="group" aria-labelledby="filter-label">
+        @for (filter of filters; track filter.value) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="activeFilter() === filter.value"
+            [attr.aria-pressed]="activeFilter() === filter.value"
+            (click)="setFilter(filter.value)"
+          >
+            {{ filter.label }}
+          </button>
+        }
+      </div>
+      <p class="filters__count" aria-live="polite">{{ resultsLabel() }}</p>
+    </div>
+
+    <div class="grid">
+      @for (project of projects(); track project.id) {
+        <shop-project-card [project]="project" [typeLabel]="typeLabel(project)" />
+      } @empty {
+        <p class="empty">No projects match that filter yet.</p>
+      }
+    </div>
+  </div>
+</section>
+
+<shop-cta-banner
+  heading="Want your listing to look like this?"
+  body="Send us the address and your listing date, and we will put together a scope and a
+        fixed quote."
+  primaryLabel="Request a quote"
+  secondaryLabel="See services and pricing"
+  secondaryLink="/services"
+/>

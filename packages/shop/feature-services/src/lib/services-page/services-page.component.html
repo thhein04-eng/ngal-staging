@@ -1,0 +1,161 @@
+<section class="page-head">
+  <div class="container">
+    <shop-section-heading
+      [level]="1"
+      eyebrow="Services &amp; pricing"
+      title="Staging packages built around where you are in the sale"
+      lead="Every quote is fixed before we start. The prices below are starting points for
+            a typical property in the Portland metro — square footage, room count, and
+            travel move the final number."
+    />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--services">
+      @for (service of services; track service.id) {
+        <shop-service-card [service]="service" />
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="What's included"
+      title="Compare the packages"
+    />
+
+    <div class="table-scroll">
+      <table class="compare-table">
+        <caption class="visually-hidden">
+          Staging packages compared by price, turnaround, rental period, and what is
+          included
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Package</th>
+            <th scope="col">Starting price</th>
+            <th scope="col">Time on site</th>
+            <th scope="col">Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (service of services; track service.id) {
+            <tr>
+              <th scope="row">{{ service.name }}</th>
+              <td>${{ service.priceFrom }} {{ service.priceUnit }}</td>
+              <td>{{ service.turnaround }}</td>
+              <td>{{ service.tagline }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="Process"
+      title="What happens after you get in touch"
+    />
+
+    <ol class="process">
+      @for (step of process; track step.order) {
+        <li class="process__step">
+          <p class="process__num" aria-hidden="true">
+            {{ step.order.toString().padStart(2, '0') }}
+          </p>
+          <h3 class="process__title">{{ step.title }}</h3>
+          <p class="process__duration">{{ step.duration }}</p>
+          <p class="process__body">{{ step.description }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container container--narrow">
+    <shop-section-heading eyebrow="Questions" title="Things sellers ask us" />
+
+    <div class="faqs">
+      @for (faq of faqs; track faq.id) {
+        <div class="faq" [class.faq--open]="isExpanded(faq.id)">
+          <h3 class="faq__heading">
+            <button
+              type="button"
+              class="faq__trigger"
+              [attr.aria-expanded]="isExpanded(faq.id)"
+              [attr.aria-controls]="'faq-panel-' + faq.id"
+              [id]="'faq-trigger-' + faq.id"
+              (click)="toggleFaq(faq.id)"
+            >
+              <span>{{ faq.question }}</span>
+              <svg
+                class="faq__icon"
+                viewBox="0 0 20 20"
+                width="20"
+                height="20"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M5 8l5 5 5-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </h3>
+          @if (isExpanded(faq.id)) {
+            <div
+              class="faq__panel"
+              [id]="'faq-panel-' + faq.id"
+              role="region"
+              [attr.aria-labelledby]="'faq-trigger-' + faq.id"
+            >
+              <p>{{ faq.answer }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="Coverage"
+      title="Where we work"
+      lead="We cover the Portland metro without a travel fee. Anything further is quoted
+            up front."
+    />
+
+    <div class="areas">
+      @for (area of serviceAreas; track area.city) {
+        <div class="area">
+          <h3 class="area__city">{{ area.city }}, {{ area.state }}</h3>
+          <p class="area__hoods">{{ area.neighborhoods.join(' · ') }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<shop-cta-banner
+  heading="Not sure which package fits?"
+  body="Send us the address and your listing date. We will tell you honestly what the
+        property needs — sometimes that is a consultation rather than a full stage."
+  primaryLabel="Request a quote"
+  secondaryLabel="See the portfolio"
+  secondaryLink="/portfolio"
+/>

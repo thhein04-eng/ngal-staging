@@ -1,0 +1,158 @@
+<section class="hero">
+  <div class="hero__inner container">
+    <div class="hero__copy">
+      <p class="hero__eyebrow">Portland, Oregon · Since {{ company.foundedYear }}</p>
+      <h1 class="hero__title">Homes that photograph beautifully and sell faster.</h1>
+      <p class="hero__lead">
+        Northlight prepares listings for market with furniture, art, and styling chosen
+        for the room — and for the buyer walking through it. Most of the homes we stage
+        go pending in under two weeks.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" routerLink="/contact">Request a quote</a>
+        <a class="btn btn--secondary" routerLink="/portfolio">See the work</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <img
+        ngSrc="/images/hero-living-room.svg"
+        width="1200"
+        height="800"
+        priority
+        alt="A staged living room with a green sofa, layered textiles, and framed artwork"
+      />
+    </div>
+  </div>
+</section>
+
+<section class="section section--surface">
+  <div class="container">
+    <shop-stat-band [stats]="stats" />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="The difference"
+      title="Same room. Same light. Different result."
+      lead="Drag the handle to see what changes when a room is staged. Buyers are not
+            imagining potential — they are responding to what is in front of them."
+    />
+
+    <div class="compare">
+      <shop-before-after
+        [beforeImage]="heroProject.beforeImage"
+        [afterImage]="heroProject.afterImage"
+        [beforeAlt]="'The ' + heroProject.title + ' living room before staging, empty and bare'"
+        [afterAlt]="'The ' + heroProject.title + ' living room after staging, warmly furnished'"
+        [caption]="heroProject.title + ' — ' + heroProject.summary"
+        label="Drag to compare the Alberta Arts craftsman before and after staging"
+      />
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="Services"
+      title="Three ways we get a house ready"
+      lead="Whether you are still living there, already moved out, or just want a plan you
+            can execute yourself, there is a package that fits."
+    />
+
+    <div class="grid grid--services">
+      @for (service of services; track service.id) {
+        <shop-service-card [service]="service" />
+      }
+    </div>
+
+    <p class="grid__footnote">
+      <a routerLink="/services">Compare all packages and pricing</a>
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="How it works"
+      title="Four steps, and we handle most of them"
+      lead="From the first walkthrough to hauling everything away after closing."
+    />
+
+    <ol class="process">
+      @for (step of process; track step.order) {
+        <li class="process__step">
+          <p class="process__num" aria-hidden="true">
+            {{ step.order.toString().padStart(2, '0') }}
+          </p>
+          <h3 class="process__title">{{ step.title }}</h3>
+          <p class="process__duration">{{ step.duration }}</p>
+          <p class="process__body">{{ step.description }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="Recent work"
+      title="Listings that did not sit"
+      lead="A few of the homes we staged this year, and how quickly they moved."
+    />
+
+    <div class="grid grid--projects">
+      @for (project of featuredProjects(); track project.id) {
+        <article class="mini">
+          <div class="mini__media">
+            <img
+              [ngSrc]="project.afterImage"
+              fill
+              [alt]="project.title + ' after staging'"
+            />
+          </div>
+          <div class="mini__body">
+            <h3 class="mini__title">{{ project.title }}</h3>
+            <p class="mini__meta">{{ project.neighborhood }}</p>
+            <p class="mini__stat">
+              <strong>{{ project.daysOnMarket }} days</strong> to pending
+            </p>
+          </div>
+        </article>
+      }
+    </div>
+
+    <p class="grid__footnote">
+      <a routerLink="/portfolio">View the full portfolio</a>
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="What people say"
+      title="Mostly, agents send us their next listing"
+    />
+
+    <div class="grid grid--testimonials">
+      @for (testimonial of testimonials; track testimonial.id) {
+        <shop-testimonial-card [testimonial]="testimonial" />
+      }
+    </div>
+  </div>
+</section>
+
+<shop-cta-banner
+  heading="Listing soon? Let's talk before the photographer does."
+  body="Tell us about the property and we will come back with a scope and a fixed quote,
+        usually within two business days."
+  primaryLabel="Request a quote"
+  secondaryLabel="See our services"
+  secondaryLink="/services"
+/>

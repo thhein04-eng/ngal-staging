@@ -1,0 +1,128 @@
+.page-head {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  background: var(--nl-cream);
+  border-bottom: 1px solid var(--nl-line);
+}
+
+/* Story -------------------------------------------------------------------- */
+
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.story__media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--nl-radius);
+  box-shadow: var(--nl-shadow-md);
+}
+
+.story__title {
+  margin: 0 0 1.25rem;
+  font-family: var(--nl-font-display);
+  font-size: 1.75rem;
+  text-wrap: balance;
+}
+
+.story__copy p {
+  margin: 0 0 1.15rem;
+  line-height: 1.75;
+  color: var(--nl-ink-muted);
+  text-wrap: pretty;
+}
+
+.story__copy p:last-child {
+  margin-bottom: 0;
+}
+
+/* Values ------------------------------------------------------------------- */
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 2rem;
+  margin-top: 2.5rem;
+}
+
+.value {
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--nl-forest);
+}
+
+.value__title {
+  margin: 0;
+  font-family: var(--nl-font-display);
+  font-size: 1.25rem;
+  text-wrap: balance;
+}
+
+.value__body {
+  margin: 0.85rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--nl-ink-muted);
+}
+
+/* Team --------------------------------------------------------------------- */
+
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+}
+
+.member__photo {
+  width: 100%;
+  max-width: 12rem;
+  height: auto;
+  border-radius: var(--nl-radius);
+  background: var(--nl-sand);
+}
+
+.member__name {
+  margin: 1.25rem 0 0;
+  font-family: var(--nl-font-display);
+  font-size: 1.3125rem;
+}
+
+.member__role {
+  margin: 0.2rem 0 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nl-forest);
+}
+
+.member__bio {
+  margin: 0.9rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--nl-ink-muted);
+}
+
+.member__creds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.member__creds li {
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--nl-line-strong);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--nl-ink-muted);
+}
+
+@media (max-width: 56rem) {
+  .story {
+    grid-template-columns: 1fr;
+  }
+}

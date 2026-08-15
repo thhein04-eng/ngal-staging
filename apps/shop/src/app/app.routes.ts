@@ -3,23 +3,36 @@ import { Route } from '@angular/router';
 export const appRoutes: Route[] = [
   {
     path: '',
-    redirectTo: 'products',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('@org/shop/feature-home').then((m) => m.HomePageComponent),
+    title: 'Northlight Home Staging — Portland, Oregon',
   },
   {
-    path: 'products',
-    loadChildren: () =>
-      import('@org/shop/feature-products').then(m => m.featureProductsRoutes),
+    path: 'services',
+    loadComponent: () =>
+      import('@org/shop/feature-services').then((m) => m.ServicesPageComponent),
+    title: 'Services & Pricing — Northlight Home Staging',
   },
   {
-    path: 'products',
-    loadChildren: () =>
-      import('@org/shop/feature-product-detail').then(
-        m => m.featureProductDetailRoutes
-      ),
+    path: 'portfolio',
+    loadComponent: () =>
+      import('@org/shop/feature-portfolio').then((m) => m.PortfolioPageComponent),
+    title: 'Portfolio — Northlight Home Staging',
+  },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('@org/shop/feature-about').then((m) => m.AboutPageComponent),
+    title: 'About the Studio — Northlight Home Staging',
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('@org/shop/feature-contact').then((m) => m.ContactPageComponent),
+    title: 'Request a Quote — Northlight Home Staging',
   },
   {
     path: '**',
-    redirectTo: 'products',
+    redirectTo: '',
   },
 ];

@@ -1,0 +1,110 @@
+<section class="page-head">
+  <div class="container">
+    <shop-section-heading
+      [level]="1"
+      eyebrow="About the studio"
+      title="We started Northlight because good houses were photographing badly"
+      lead="Ingrid Halvorsen spent nine years in residential interior design watching
+            well-built Portland homes sit on the market behind bad listing photos. In
+            2014 she started staging them instead."
+    />
+  </div>
+</section>
+
+<section class="section">
+  <div class="container story">
+    <div class="story__media">
+      <img
+        ngSrc="/images/about-studio.svg"
+        width="1200"
+        height="800"
+        priority
+        alt="A staged interior from the Northlight studio, with a sofa, floor lamp, and framed art"
+      />
+    </div>
+    <div class="story__copy">
+      <h2 class="story__title">A staging studio, not a furniture rental</h2>
+      <p>
+        Plenty of companies will drop furniture in a house. That is not the same as
+        staging it. The work that changes a buyer's mind happens in the decisions —
+        which of your pieces stay, where the sightline should land when someone steps
+        through the front door, what the room looks like through a 24mm lens at ten in
+        the morning.
+      </p>
+      <p>
+        We are a team of {{ team.length }} with our own warehouse in North Portland and
+        a crew that has been with us for years. Since {{ company.foundedYear }} we have
+        staged over four hundred homes across the metro, from 900 square foot condos to
+        estates in the West Hills.
+      </p>
+      <p>
+        Most of our work comes from listing agents who have used us before. That is the
+        metric we actually care about.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--surface">
+  <div class="container">
+    <shop-stat-band [stats]="stats" />
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="How we work"
+      title="Four things we hold ourselves to"
+    />
+
+    <div class="values">
+      @for (value of values; track value.title) {
+        <div class="value">
+          <h3 class="value__title">{{ value.title }}</h3>
+          <p class="value__body">{{ value.body }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <shop-section-heading
+      eyebrow="The team"
+      title="Who you will actually be working with"
+    />
+
+    <div class="team">
+      @for (member of team; track member.id) {
+        <article class="member">
+          <img
+            class="member__photo"
+            [ngSrc]="member.image"
+            width="480"
+            height="480"
+            [alt]="'Portrait of ' + member.name"
+          />
+          <h3 class="member__name">{{ member.name }}</h3>
+          <p class="member__role">{{ member.role }}</p>
+          <p class="member__bio">{{ member.bio }}</p>
+          <ul class="member__creds">
+            @for (credential of member.credentials; track credential) {
+              <li>{{ credential }}</li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<shop-cta-banner
+  heading="Come see the warehouse"
+  body="If you would rather talk in person, we are happy to walk you through the inventory
+        and show you what a staging plan looks like before you commit to anything."
+  primaryLabel="Get in touch"
+  secondaryLabel="See the portfolio"
+  secondaryLink="/portfolio"
+/>
