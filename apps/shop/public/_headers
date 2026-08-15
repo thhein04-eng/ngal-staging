@@ -1,0 +1,24 @@
+# Cloudflare Pages response headers.
+
+# Sensible defaults for every response.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), interest-cohort=()
+
+# Build artefacts carry a content hash in the filename (outputHashing: "all"),
+# so they can be cached forever — a change produces a new filename.
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static assets are copied through unhashed, so they must revalidate.
+# Swapping in real photography then takes effect within the day.
+/images/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/favicon.ico
+  Cache-Control: public, max-age=86400

@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { gotoHydrated } from './support/hydration';
 
 test.describe('Quote request form', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/contact');
+    await gotoHydrated(page, '/contact');
   });
 
   test('blocks submission and reports errors when empty', async ({ page }) => {
@@ -52,7 +53,7 @@ test.describe('Quote request form', () => {
   });
 
   test('preselects the package when arriving from a service card', async ({ page }) => {
-    await page.goto('/contact?service=luxury');
+    await gotoHydrated(page, '/contact?service=luxury');
     await expect(page.getByLabel('Package')).toHaveValue('luxury');
   });
 });

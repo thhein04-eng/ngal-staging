@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { gotoHydrated } from './support/hydration';
 
 test.describe('Portfolio', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/portfolio');
+    await gotoHydrated(page, '/portfolio');
   });
 
   test('shows all projects by default', async ({ page }) => {

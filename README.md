@@ -12,7 +12,7 @@ A marketing website for a home staging studio, built as an Angular 22 + [Nx](htt
 
 - **2 Applications**
 
-  - `shop` — the Angular marketing site (SSR + prerendering enabled)
+  - `shop` — the Angular marketing site (fully prerendered to static files)
   - `api` — legacy Express backend from the original template; **not used by the site**
 
 - **8 Libraries**
@@ -56,6 +56,17 @@ npx nx run shop-e2e:e2e
 # Visualize the project graph
 npx nx graph
 ```
+
+## 🚢 Deploying
+
+The site builds to static files and is deployed to **Cloudflare Pages**:
+
+- Build command: `npx nx run shop:build`
+- Output directory: `dist/apps/shop/browser`
+- `NODE_VERSION`: `22.22.3`
+
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full step-by-step guide, how routing and
+caching behave in production, and troubleshooting.
 
 ## 🏠 About the Site
 
@@ -195,7 +206,7 @@ npx nx fix-ci
 
 ```
 ├── apps/
-│   ├── shop/           [scope:shop]    - Angular marketing site (SSR + prerender)
+│   ├── shop/           [scope:shop]    - Angular marketing site (prerendered)
 │   ├── shop-e2e/                       - Playwright tests
 │   └── api/            [scope:api]     - Legacy Express API (unused by the site)
 ├── packages/
