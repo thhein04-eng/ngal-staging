@@ -40,7 +40,7 @@ import { Component, input } from '@angular/core';
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--nl-forest);
+      color: var(--nl-accent);
     }
 
     .title {

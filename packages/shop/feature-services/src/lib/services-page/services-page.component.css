@@ -94,7 +94,7 @@
   margin: 0 0 0.75rem;
   font-family: var(--nl-font-display);
   font-size: 1.5rem;
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .process__title {
@@ -151,12 +151,12 @@
 }
 
 .faq__trigger:hover {
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .faq__icon {
   flex: none;
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .faq--open .faq__icon {

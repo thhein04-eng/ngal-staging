@@ -16,7 +16,7 @@ describe('SiteHeaderComponent', () => {
   });
 
   function toggle(): HTMLButtonElement {
-    return fixture.nativeElement.querySelector('.toggle');
+    return fixture.nativeElement.querySelector('.menu-toggle');
   }
 
   it('renders a skip link targeting the main landmark', () => {

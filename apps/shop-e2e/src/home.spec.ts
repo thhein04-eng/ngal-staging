@@ -28,11 +28,31 @@ test.describe('Home page', () => {
   }) => {
     const slider = page.getByRole('slider').first();
     await expect(slider).toBeVisible();
-    await expect(slider).toHaveValue('50');
+    await expect(slider).toHaveAttribute('min', '0');
+    await expect(slider).toHaveAttribute('max', '100');
+
+    await slider.scrollIntoViewIfNeeded();
+    const start = Number(await slider.inputValue());
 
     await slider.focus();
     await page.keyboard.press('ArrowRight');
-    await expect(slider).toHaveValue('51');
+    await expect(slider).toHaveValue(String(start + 1));
+  });
+
+  test('keyboard control takes over from the scroll-driven wipe', async ({ page }) => {
+    const slider = page.getByRole('slider').first();
+
+    await slider.scrollIntoViewIfNeeded();
+    await slider.focus();
+    await page.keyboard.press('ArrowRight');
+    const afterKey = await slider.inputValue();
+
+    // Scrolling must no longer move the wipe once the visitor has taken control.
+    const before = await page.evaluate(() => window.scrollY);
+    await page.mouse.wheel(0, 500);
+    await page.waitForFunction((y) => window.scrollY > y, before);
+
+    await expect(slider).toHaveValue(afterKey);
   });
 
   test('lists all four staging packages', async ({ page }) => {

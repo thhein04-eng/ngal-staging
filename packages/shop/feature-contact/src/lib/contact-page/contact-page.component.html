@@ -1,6 +1,7 @@
 <section class="page-head">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       [level]="1"
       eyebrow="Request a quote"
       title="Tell us about the property"
@@ -12,7 +13,7 @@
 
 <section class="section">
   <div class="container layout">
-    <div class="form-col">
+    <div class="form-col" shopReveal="up">
       @if (result(); as submitted) {
         <div class="confirmation" role="status">
           <p class="confirmation__icon" aria-hidden="true">✓</p>
@@ -295,7 +296,7 @@
       }
     </div>
 
-    <aside class="aside">
+    <aside class="aside" shopReveal="up" [revealDelay]="120">
       <h2 class="aside__title">Rather just talk?</h2>
       <ul class="aside__list">
         <li>

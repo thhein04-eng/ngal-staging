@@ -3,18 +3,14 @@ import { NgOptimizedImage } from '@angular/common';
 import { StagingContentService } from '@org/shop/data';
 import {
   CtaBannerComponent,
+  RevealDirective,
   SectionHeadingComponent,
   StatBandComponent,
 } from '@org/shop/shared-ui';
 
 @Component({
   selector: 'shop-about-page',
-  imports: [
-    NgOptimizedImage,
-    CtaBannerComponent,
-    SectionHeadingComponent,
-    StatBandComponent,
-  ],
+  imports: [CtaBannerComponent, NgOptimizedImage, RevealDirective, SectionHeadingComponent, StatBandComponent],
   templateUrl: './about-page.component.html',
   styleUrl: './about-page.component.css',
 })

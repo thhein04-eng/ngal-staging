@@ -1,6 +1,7 @@
 <section class="page-head">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       [level]="1"
       eyebrow="Services &amp; pricing"
       title="Staging packages built around where you are in the sale"
@@ -24,11 +25,12 @@
 <section class="section section--tint">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="What's included"
       title="Compare the packages"
     />
 
-    <div class="table-scroll">
+    <div class="table-scroll" shopReveal="up">
       <table class="compare-table">
         <caption class="visually-hidden">
           Staging packages compared by price, turnaround, rental period, and what is
@@ -60,6 +62,7 @@
 <section class="section">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="Process"
       title="What happens after you get in touch"
     />
@@ -81,9 +84,9 @@
 
 <section class="section section--tint">
   <div class="container container--narrow">
-    <shop-section-heading eyebrow="Questions" title="Things sellers ask us" />
+    <shop-section-heading shopReveal="up" eyebrow="Questions" title="Things sellers ask us" />
 
-    <div class="faqs">
+    <div class="faqs" shopReveal="up">
       @for (faq of faqs; track faq.id) {
         <div class="faq" [class.faq--open]="isExpanded(faq.id)">
           <h3 class="faq__heading">
@@ -134,6 +137,7 @@
 <section class="section">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="Coverage"
       title="Where we work"
       lead="We cover the Portland metro without a travel fee. Anything further is quoted

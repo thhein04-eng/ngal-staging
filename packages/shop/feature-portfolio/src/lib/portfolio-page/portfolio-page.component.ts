@@ -5,6 +5,7 @@ import {
   BeforeAfterComponent,
   CtaBannerComponent,
   ProjectCardComponent,
+  RevealDirective,
   SectionHeadingComponent,
 } from '@org/shop/shared-ui';
 
@@ -15,12 +16,7 @@ interface FilterOption {
 
 @Component({
   selector: 'shop-portfolio-page',
-  imports: [
-    BeforeAfterComponent,
-    CtaBannerComponent,
-    ProjectCardComponent,
-    SectionHeadingComponent,
-  ],
+  imports: [BeforeAfterComponent, CtaBannerComponent, ProjectCardComponent, RevealDirective, SectionHeadingComponent],
   templateUrl: './portfolio-page.component.html',
   styleUrl: './portfolio-page.component.css',
 })

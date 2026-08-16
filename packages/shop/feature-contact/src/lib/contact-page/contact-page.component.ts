@@ -22,7 +22,10 @@ import {
   ServiceTier,
 } from '@org/models';
 import { QuoteRequestService, StagingContentService } from '@org/shop/data';
-import { SectionHeadingComponent } from '@org/shop/shared-ui';
+import {
+  RevealDirective,
+  SectionHeadingComponent,
+} from '@org/shop/shared-ui';
 
 const SERVICE_TIERS: readonly ServiceTier[] = [
   'consultation',
@@ -48,7 +51,7 @@ function emptyRequest(): QuoteRequest {
 
 @Component({
   selector: 'shop-contact-page',
-  imports: [FormField, SectionHeadingComponent],
+  imports: [FormField, RevealDirective, SectionHeadingComponent],
   templateUrl: './contact-page.component.html',
   styleUrl: './contact-page.component.css',
 })

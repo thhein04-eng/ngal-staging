@@ -117,7 +117,7 @@ import { PortfolioProject } from '@org/models';
     }
 
     .stat--over {
-      color: var(--nl-forest);
+      color: var(--nl-accent);
     }
   `,
 })

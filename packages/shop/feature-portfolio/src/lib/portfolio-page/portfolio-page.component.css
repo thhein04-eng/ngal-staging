@@ -41,7 +41,7 @@
 }
 
 .showcase__stat strong {
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 /* Filters ------------------------------------------------------------------ */
@@ -80,14 +80,14 @@
 }
 
 .chip:hover {
-  border-color: var(--nl-forest);
-  color: var(--nl-forest);
+  border-color: var(--nl-accent);
+  color: var(--nl-accent);
 }
 
 .chip--active {
   background: var(--nl-forest);
-  border-color: var(--nl-forest);
-  color: #fff;
+  border-color: var(--nl-accent);
+  color: var(--nl-on-forest);
 }
 
 .filters__count {

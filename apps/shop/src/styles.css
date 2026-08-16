@@ -1,11 +1,16 @@
 /* ==========================================================================
-   Northlight Home Staging — global styles and design tokens
+   Northlight Home Staging — global styles, design tokens, motion primitives
    ========================================================================== */
 
 :root {
-  /* Brand */
+  /* Solid brand surfaces. These stay dark green in both themes so white text
+     on them keeps its contrast — only the *text* accent below re-tones. */
   --nl-forest: #2f5d50;
   --nl-forest-dark: #234840;
+  --nl-on-forest: #ffffff;
+
+  /* Text-safe accent. Lightens in dark mode so it stays legible on a dark bg. */
+  --nl-accent: #2f5d50;
   --nl-clay: #b5714a;
 
   /* Text */
@@ -17,18 +22,25 @@
   --nl-sand: #f0eae0;
   --nl-surface: #ffffff;
 
+  /* Cinematic full-bleed sections (always dark, both themes) */
+  --nl-cinema: #14130f;
+  --nl-cinema-ink: #f4efe6;
+  --nl-cinema-muted: #a9a196;
+
   /* Lines */
   --nl-line: #e3ddd2;
   --nl-line-strong: #c8c0b2;
 
   --nl-focus: #2f5d50;
+  --nl-shadow-md: 0 10px 30px rgb(35 33 30 / 0.09);
+  --nl-shadow-lg: 0 24px 60px rgb(35 33 30 / 0.14);
 
   /* Type */
   --nl-font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
     'Times New Roman', serif;
   --nl-font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
-  --nl-size-h1: clamp(2.5rem, 6vw, 4rem);
+  --nl-size-h1: clamp(2.5rem, 6vw, 4.5rem);
   --nl-size-h2: clamp(1.875rem, 4vw, 2.75rem);
 
   /* Layout */
@@ -38,7 +50,59 @@
 
   --nl-radius: 14px;
   --nl-radius-sm: 8px;
-  --nl-shadow-md: 0 10px 30px rgb(35 33 30 / 0.09);
+
+  /* Motion */
+  --nl-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --nl-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --nl-dur: 0.6s;
+
+  color-scheme: light;
+}
+
+/* Dark palette. Applied when the OS asks for it and the user has not pinned
+   light, and again for an explicit dark choice so the toggle wins both ways. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --nl-accent: #8fc7b2;
+    --nl-clay: #d69b74;
+
+    --nl-ink: #f3eee5;
+    --nl-ink-muted: #b0a89b;
+
+    --nl-cream: #14130f;
+    --nl-sand: #1d1b16;
+    --nl-surface: #1a1814;
+
+    --nl-line: #302c24;
+    --nl-line-strong: #4a4436;
+
+    --nl-focus: #8fc7b2;
+    --nl-shadow-md: 0 10px 30px rgb(0 0 0 / 0.5);
+    --nl-shadow-lg: 0 24px 60px rgb(0 0 0 / 0.6);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --nl-accent: #8fc7b2;
+  --nl-clay: #d69b74;
+
+  --nl-ink: #f3eee5;
+  --nl-ink-muted: #b0a89b;
+
+  --nl-cream: #14130f;
+  --nl-sand: #1d1b16;
+  --nl-surface: #1a1814;
+
+  --nl-line: #302c24;
+  --nl-line-strong: #4a4436;
+
+  --nl-focus: #8fc7b2;
+  --nl-shadow-md: 0 10px 30px rgb(0 0 0 / 0.5);
+  --nl-shadow-lg: 0 24px 60px rgb(0 0 0 / 0.6);
+
+  color-scheme: dark;
 }
 
 *,
@@ -53,6 +117,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   font-family: var(--nl-font-body);
   font-size: 1rem;
@@ -60,6 +130,7 @@ body {
   color: var(--nl-ink);
   background: var(--nl-cream);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1,
@@ -71,7 +142,7 @@ h4 {
 }
 
 a {
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 a:hover {
@@ -91,7 +162,6 @@ img {
   height: auto;
 }
 
-/* A single, consistent focus treatment across the whole site. */
 :focus-visible {
   outline: 3px solid var(--nl-focus);
   outline-offset: 2px;
@@ -129,7 +199,20 @@ img {
   background: var(--nl-surface);
 }
 
-/* Shared button styles used by page templates. */
+/* Full-bleed dark act, used for cinematic moments in both themes. */
+.section--cinema {
+  background: var(--nl-cinema);
+  color: var(--nl-cinema-ink);
+}
+
+.section--cinema h1,
+.section--cinema h2,
+.section--cinema h3 {
+  color: var(--nl-cinema-ink);
+}
+
+/* Buttons ---------------------------------------------------------------- */
+
 .btn {
   display: inline-block;
   padding: 0.85rem 1.75rem;
@@ -148,7 +231,7 @@ img {
 .btn--primary {
   background: var(--nl-forest);
   border-color: var(--nl-forest);
-  color: #fff;
+  color: var(--nl-on-forest);
 }
 
 .btn--primary:hover:not(:disabled) {
@@ -172,6 +255,72 @@ img {
   cursor: not-allowed;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .btn {
+    transition: transform 0.25s var(--nl-ease), background-color 0.25s var(--nl-ease),
+      border-color 0.25s var(--nl-ease), box-shadow 0.25s var(--nl-ease);
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--nl-shadow-md);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Motion primitives
+
+   `motion-ready` is set on <html> by an inline script before first paint, and
+   only when the visitor has not asked for reduced motion. Everything below is
+   scoped to it, so with JavaScript disabled — or reduced motion requested —
+   content renders in its final state with no hidden elements.
+   ========================================================================== */
+
+.motion-ready [data-reveal] {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.motion-ready [data-reveal='up'] {
+  transform: translateY(2.5rem);
+}
+
+.motion-ready [data-reveal='left'] {
+  transform: translateX(-2.5rem);
+}
+
+.motion-ready [data-reveal='right'] {
+  transform: translateX(2.5rem);
+}
+
+.motion-ready [data-reveal='scale'] {
+  transform: scale(0.94);
+}
+
+.motion-ready [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.8s var(--nl-ease-out), transform 0.9s var(--nl-ease-out);
+  transition-delay: var(--nl-reveal-delay, 0ms);
+  will-change: auto;
+}
+
+/* Staggered children, used for word-by-word headline reveals. */
+.motion-ready [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(0.9em);
+}
+
+.motion-ready [data-reveal-stagger].is-revealed > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s var(--nl-ease-out), transform 0.8s var(--nl-ease-out);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -180,5 +329,11 @@ img {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  [data-reveal],
+  [data-reveal-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

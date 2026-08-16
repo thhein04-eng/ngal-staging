@@ -1,7 +1,15 @@
-import { Component, ElementRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  afterNextRender,
+  inject,
+  signal,
+} from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
+import { ScrollProgressComponent } from '../motion/scroll-progress.component';
+import { ThemeToggleComponent } from '../theme/theme-toggle.component';
 
 interface NavItem {
   readonly path: string;
@@ -22,7 +30,7 @@ const NAV: readonly NavItem[] = [
  */
 @Component({
   selector: 'shop-site-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ScrollProgressComponent, ThemeToggleComponent],
   host: {
     '(document:keydown.escape)': 'close()',
     '(document:click)': 'onDocumentClick($event)',
@@ -30,7 +38,7 @@ const NAV: readonly NavItem[] = [
   template: `
     <a class="skip" href="#main">Skip to main content</a>
 
-    <header class="header">
+    <header class="header" [class.header--stuck]="stuck()">
       <div class="header__inner">
         <a class="brand" routerLink="/" (click)="close()">
           <span class="brand__mark" aria-hidden="true">
@@ -51,19 +59,6 @@ const NAV: readonly NavItem[] = [
             <span class="brand__sub">Home Staging</span>
           </span>
         </a>
-
-        <button
-          class="toggle"
-          type="button"
-          [attr.aria-expanded]="open()"
-          aria-controls="primary-nav"
-          (click)="toggle()"
-        >
-          <span class="visually-hidden">{{ open() ? 'Close menu' : 'Open menu' }}</span>
-          <span class="toggle__bars" [class.toggle__bars--open]="open()" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </span>
-        </button>
 
         <nav id="primary-nav" class="nav" [class.nav--open]="open()" aria-label="Primary">
           <ul class="nav__list">
@@ -86,6 +81,29 @@ const NAV: readonly NavItem[] = [
             </li>
           </ul>
         </nav>
+
+        <div class="actions">
+          <shop-theme-toggle />
+
+          <button
+            class="menu-toggle"
+            type="button"
+            [attr.aria-expanded]="open()"
+            aria-controls="primary-nav"
+            (click)="toggle()"
+          >
+            <span class="visually-hidden">{{ open() ? 'Close menu' : 'Open menu' }}</span>
+            <span
+              class="menu-toggle__bars"
+              [class.menu-toggle__bars--open]="open()"
+              aria-hidden="true"
+            >
+              <span></span><span></span><span></span>
+            </span>
+          </button>
+        </div>
+
+        <shop-scroll-progress />
       </div>
     </header>
   `,
@@ -98,7 +116,7 @@ const NAV: readonly NavItem[] = [
       padding: 0.75rem 1.25rem;
       border-radius: var(--nl-radius-sm);
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
       font-weight: 600;
       text-decoration: none;
       transition: top 0.15s ease;
@@ -112,11 +130,27 @@ const NAV: readonly NavItem[] = [
       position: sticky;
       top: 0;
       z-index: 50;
-      background: var(--nl-cream);
-      border-bottom: 1px solid var(--nl-line);
+      background: color-mix(in srgb, var(--nl-cream) 82%, transparent);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid transparent;
+    }
+
+    /* Border and shadow appear only once the page has scrolled, so the header
+       sits flush against the hero at rest. */
+    .header--stuck {
+      border-bottom-color: var(--nl-line);
+      box-shadow: 0 1px 20px rgb(0 0 0 / 0.06);
+    }
+
+    @supports not (backdrop-filter: blur(1px)) {
+      .header {
+        background: var(--nl-cream);
+      }
     }
 
     .header__inner {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -124,6 +158,12 @@ const NAV: readonly NavItem[] = [
       max-width: var(--nl-container);
       margin-inline: auto;
       padding: 1rem var(--nl-gutter);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
 
     .brand {
@@ -139,7 +179,7 @@ const NAV: readonly NavItem[] = [
     }
 
     .brand__mark {
-      color: var(--nl-forest);
+      color: var(--nl-accent);
       display: grid;
       place-items: center;
     }
@@ -164,7 +204,7 @@ const NAV: readonly NavItem[] = [
       color: var(--nl-ink-muted);
     }
 
-    .toggle {
+    .menu-toggle {
       display: none;
       padding: 0.6rem;
       border: 1px solid var(--nl-line-strong);
@@ -174,19 +214,19 @@ const NAV: readonly NavItem[] = [
       color: var(--nl-ink);
     }
 
-    .toggle__bars {
+    .menu-toggle__bars {
       display: grid;
       gap: 4px;
       width: 20px;
     }
 
-    .toggle__bars span {
+    .menu-toggle__bars span {
       height: 2px;
       background: currentColor;
       border-radius: 2px;
     }
 
-    .toggle__bars--open span:nth-child(2) {
+    .menu-toggle__bars--open span:nth-child(2) {
       opacity: 0;
     }
 
@@ -214,7 +254,7 @@ const NAV: readonly NavItem[] = [
     }
 
     .nav__list a.is-active {
-      color: var(--nl-forest);
+      color: var(--nl-accent);
       font-weight: 600;
     }
 
@@ -222,7 +262,7 @@ const NAV: readonly NavItem[] = [
     .nav__cta a.is-active {
       margin-left: 0.5rem;
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
       font-weight: 600;
     }
 
@@ -230,15 +270,33 @@ const NAV: readonly NavItem[] = [
       background: var(--nl-forest-dark);
     }
 
+    @media (prefers-reduced-motion: no-preference) {
+      .header {
+        transition: border-color 0.3s var(--nl-ease), box-shadow 0.3s var(--nl-ease),
+          background-color 0.3s var(--nl-ease);
+      }
+
+      .nav__list a {
+        transition: background-color 0.2s var(--nl-ease), color 0.2s var(--nl-ease);
+      }
+
+      .nav__cta a:hover {
+        transform: translateY(-1px);
+      }
+    }
+
     @media (max-width: 56rem) {
-      /* Lets the nav panel wrap onto its own row below the brand and toggle. */
+      /* Lets the nav panel wrap onto its own row below the brand and actions. */
       .header__inner {
         flex-wrap: wrap;
       }
 
-      .toggle {
-        display: block;
+      .actions {
         order: 3;
+      }
+
+      .menu-toggle {
+        display: block;
       }
 
       .nav {
@@ -276,6 +334,33 @@ export class SiteHeaderComponent {
   protected readonly nav = NAV;
   private readonly menuOpen = signal(false);
   protected readonly open = this.menuOpen.asReadonly();
+
+  /** True once the page has scrolled away from the top. */
+  private readonly scrolled = signal(false);
+  protected readonly stuck = this.scrolled.asReadonly();
+
+  constructor() {
+    afterNextRender(() => {
+      let queued = false;
+      const update = () => {
+        queued = false;
+        this.scrolled.set(window.scrollY > 8);
+      };
+
+      addEventListener(
+        'scroll',
+        () => {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(update);
+          }
+        },
+        { passive: true }
+      );
+
+      update();
+    });
+  }
 
   /** Current URL without query string, used for `aria-current`. */
   private readonly currentPath = toSignal(

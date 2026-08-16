@@ -1,42 +1,94 @@
 /* Hero -------------------------------------------------------------------- */
 
 .hero {
-  background: var(--nl-cream);
-  border-bottom: 1px solid var(--nl-line);
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: min(92vh, 54rem);
+  overflow: hidden;
+  background: var(--nl-cinema);
+  color: var(--nl-cinema-ink);
+  isolation: isolate;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Parallax: the image drifts up more slowly than the page scrolls. */
+  transform: translate3d(0, calc(var(--nl-shift, 0) * 14%), 0)
+    scale(calc(1.06 + var(--nl-shift, 0) * 0.06));
+  transform-origin: center 30%;
+}
+
+/* Keeps the headline legible over whatever photography sits behind it. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      100deg,
+      rgb(12 11 8 / 0.9) 0%,
+      rgb(12 11 8 / 0.72) 42%,
+      rgb(12 11 8 / 0.34) 72%,
+      rgb(12 11 8 / 0.5) 100%
+    ),
+    linear-gradient(to top, rgb(12 11 8 / 0.75), transparent 45%);
 }
 
 .hero__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: clamp(2rem, 5vw, 4rem);
-  padding-block: clamp(3rem, 7vw, 5.5rem);
+  position: relative;
+  width: 100%;
+  padding-block: clamp(6rem, 16vh, 10rem);
 }
 
 .hero__eyebrow {
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--nl-forest);
+  color: rgb(244 239 230 / 0.72);
 }
 
 .hero__title {
+  max-width: 18ch;
   margin: 0;
   font-family: var(--nl-font-display);
   font-size: var(--nl-size-h1);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--nl-cinema-ink);
+}
+
+.hero__tail {
+  display: block;
+  color: rgb(244 239 230 / 0.62);
+}
+
+/* Each word sits in an overflow-clipped box and slides up from beneath it. */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-right: 0.22em;
+}
+
+.word__inner {
+  display: inline-block;
 }
 
 .hero__lead {
-  max-width: 48ch;
-  margin: 1.5rem 0 0;
+  max-width: 46ch;
+  margin: 1.75rem 0 0;
   font-size: 1.125rem;
   line-height: 1.65;
-  color: var(--nl-ink-muted);
+  color: rgb(244 239 230 / 0.82);
   text-wrap: pretty;
 }
 
@@ -44,21 +96,173 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
-.hero__media img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--nl-radius);
-  box-shadow: var(--nl-shadow-md);
+/* On the dark hero the secondary button needs light borders and text. */
+.hero__actions .btn--secondary {
+  border-color: rgb(244 239 230 / 0.45);
+  color: var(--nl-cinema-ink);
+  background: transparent;
+}
+
+.hero__actions .btn--secondary:hover {
+  border-color: var(--nl-cinema-ink);
+  background: rgb(244 239 230 / 0.12);
+}
+
+.hero :focus-visible {
+  outline-color: var(--nl-cinema-ink);
+}
+
+.hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: 2rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  transform: translateX(-50%);
+  color: rgb(244 239 230 / 0.65);
+}
+
+.hero__cue-line {
+  width: 1px;
+  height: 2.5rem;
+  background: linear-gradient(to bottom, transparent, rgb(244 239 230 / 0.8));
+}
+
+.hero__cue-text {
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Hero motion. The starting state only applies while motion is enabled, so a
+   reduced-motion or no-JS visitor sees the finished headline immediately. */
+.motion-ready .hero .word__inner {
+  transform: translateY(110%);
+  opacity: 0;
+}
+
+.motion-ready .hero--entered .word__inner {
+  transform: none;
+  opacity: 1;
+  transition: transform 0.95s var(--nl-ease-out), opacity 0.7s var(--nl-ease-out);
+  transition-delay: var(--nl-word-delay, 0ms);
+}
+
+.motion-ready .hero__eyebrow,
+.motion-ready .hero__lead,
+.motion-ready .hero__actions {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+
+.motion-ready .hero--entered .hero__eyebrow,
+.motion-ready .hero--entered .hero__lead,
+.motion-ready .hero--entered .hero__actions {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.8s var(--nl-ease-out), transform 0.8s var(--nl-ease-out);
+}
+
+.motion-ready .hero--entered .hero__eyebrow {
+  transition-delay: 60ms;
+}
+
+.motion-ready .hero--entered .hero__lead {
+  transition-delay: 620ms;
+}
+
+.motion-ready .hero--entered .hero__actions {
+  transition-delay: 740ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__cue {
+    animation: cue-drift 2.4s var(--nl-ease) infinite;
+  }
+
+  .hero__cue,
+  .hero__media {
+    transition: opacity 0.2s linear;
+  }
+}
+
+@keyframes cue-drift {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 0.4rem);
+  }
+}
+
+/* Pinned comparison ------------------------------------------------------- */
+
+.pinned {
+  padding-bottom: 0;
+}
+
+.pinned__intro {
+  max-width: 44rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.pinned__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(244 239 230 / 0.6);
+}
+
+.pinned__title {
+  margin: 0;
+  font-family: var(--nl-font-display);
+  font-size: var(--nl-size-h2);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.pinned__lead {
+  max-width: 52ch;
+  margin: 1.25rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--nl-cinema-muted);
+}
+
+/* The tall stage gives the sticky child room to scrub through. */
+.pinned__stage {
+  height: 220vh;
+}
+
+.pinned__sticky {
+  position: sticky;
+  top: 12vh;
+  padding-bottom: var(--nl-section);
+}
+
+.pinned__sticky :is(figcaption) {
+  color: var(--nl-cinema-muted);
+}
+
+@media (max-width: 48rem) {
+  /* Pinning fights momentum scrolling on small screens; show it inline. */
+  .pinned__stage {
+    height: auto;
+  }
+
+  .pinned__sticky {
+    position: static;
+  }
 }
 
 /* Sections ---------------------------------------------------------------- */
-
-.compare {
-  margin-top: 2.5rem;
-}
 
 .grid {
   display: grid;
@@ -71,6 +275,15 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.grid--services > * {
+  display: flex;
+}
+
+.grid--services shop-service-card {
+  display: flex;
+  width: 100%;
+}
+
 .grid--projects {
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
@@ -78,6 +291,15 @@
 /* Four quotes read better as 2x2 than as a row of three plus an orphan. */
 .grid--testimonials {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid--testimonials > * {
+  display: flex;
+}
+
+.grid--testimonials shop-testimonial-card {
+  display: flex;
+  width: 100%;
 }
 
 @media (max-width: 68rem) {
@@ -107,7 +329,6 @@
   margin: 2.5rem 0 0;
   padding: 0;
   list-style: none;
-  counter-reset: none;
 }
 
 .process__step {
@@ -119,13 +340,14 @@
   margin: 0 0 0.75rem;
   font-family: var(--nl-font-display);
   font-size: 1.5rem;
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .process__title {
   margin: 0;
   font-family: var(--nl-font-display);
   font-size: 1.25rem;
+  color: var(--nl-ink);
 }
 
 .process__duration {
@@ -155,6 +377,7 @@
 .mini__media {
   position: relative;
   aspect-ratio: 4 / 3;
+  overflow: hidden;
   background: var(--nl-sand);
 }
 
@@ -170,6 +393,7 @@
   margin: 0;
   font-family: var(--nl-font-display);
   font-size: 1.1875rem;
+  color: var(--nl-ink);
 }
 
 .mini__meta {
@@ -185,15 +409,26 @@
 }
 
 .mini__stat strong {
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
-@media (max-width: 56rem) {
-  .hero__inner {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: no-preference) {
+  .mini {
+    transition: transform 0.5s var(--nl-ease), box-shadow 0.5s var(--nl-ease),
+      border-color 0.5s var(--nl-ease);
   }
 
-  .hero__media {
-    order: -1;
+  .mini:hover {
+    transform: translateY(-6px);
+    border-color: var(--nl-line-strong);
+    box-shadow: var(--nl-shadow-lg);
+  }
+
+  .mini__media img {
+    transition: transform 0.9s var(--nl-ease-out);
+  }
+
+  .mini:hover .mini__media img {
+    transform: scale(1.06);
   }
 }

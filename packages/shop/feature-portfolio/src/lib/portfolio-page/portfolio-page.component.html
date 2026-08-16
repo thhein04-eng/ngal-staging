@@ -1,6 +1,7 @@
 <section class="page-head">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       [level]="1"
       eyebrow="Portfolio"
       title="Homes we staged, and how they did"
@@ -13,6 +14,7 @@
 <section class="section">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="Transformations"
       title="Drag to compare"
       lead="Same room, same time of day. The only variable is the staging."
@@ -20,7 +22,7 @@
 
     <div class="showcase">
       @for (project of showcase(); track project.id; let first = $first) {
-        <div class="showcase__item">
+        <div class="showcase__item" shopReveal="up">
           <shop-before-after
             [beforeImage]="project.beforeImage"
             [afterImage]="project.afterImage"
@@ -45,9 +47,9 @@
 
 <section class="section section--tint">
   <div class="container">
-    <shop-section-heading eyebrow="All work" title="Browse the archive" />
+    <shop-section-heading shopReveal="up" eyebrow="All work" title="Browse the archive" />
 
-    <div class="filters">
+    <div class="filters" shopReveal="up">
       <h3 class="filters__label" id="filter-label">Filter by package</h3>
       <div class="filters__buttons" role="group" aria-labelledby="filter-label">
         @for (filter of filters; track filter.value) {
@@ -66,8 +68,13 @@
     </div>
 
     <div class="grid">
-      @for (project of projects(); track project.id) {
-        <shop-project-card [project]="project" [typeLabel]="typeLabel(project)" />
+      @for (project of projects(); track project.id; let i = $index) {
+        <shop-project-card
+          [project]="project"
+          [typeLabel]="typeLabel(project)"
+          shopReveal="scale"
+          [revealDelay]="(i % 3) * 90"
+        />
       } @empty {
         <p class="empty">No projects match that filter yet.</p>
       }

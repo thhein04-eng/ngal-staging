@@ -66,13 +66,15 @@ import { RouterLink } from '@angular/router';
       text-decoration: none;
     }
 
+    /* The banner is always dark green, so this button stays light in both
+       themes — themed tokens would invert it and destroy the contrast. */
     .btn--solid {
-      background: #fff;
-      color: var(--nl-forest);
+      background: #ffffff;
+      color: #2f5d50;
     }
 
     .btn--solid:hover {
-      background: var(--nl-cream);
+      background: #efeae1;
       text-decoration: none;
     }
 
