@@ -69,7 +69,7 @@ import { StagingService } from '@org/models';
     }
 
     .card--featured {
-      border-color: var(--nl-forest);
+      border-color: var(--nl-accent);
       box-shadow: var(--nl-shadow-md);
     }
 
@@ -79,7 +79,7 @@ import { StagingService } from '@org/models';
       padding: 0.3rem 0.7rem;
       border-radius: 999px;
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -152,29 +152,29 @@ import { StagingService } from '@org/models';
 
     .tick {
       margin-top: 0.15rem;
-      color: var(--nl-forest);
+      color: var(--nl-accent);
     }
 
     .cta {
       margin-top: auto;
       padding: 0.8rem 1.25rem;
-      border: 1px solid var(--nl-forest);
+      border: 1px solid var(--nl-accent);
       border-radius: var(--nl-radius-sm);
       text-align: center;
       font-weight: 600;
       text-decoration: none;
-      color: var(--nl-forest);
+      color: var(--nl-accent);
       background: transparent;
     }
 
     .card--featured .cta {
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
     }
 
     .cta:hover {
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
       text-decoration: none;
     }
 

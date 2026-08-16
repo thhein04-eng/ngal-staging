@@ -41,7 +41,7 @@
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .field {
@@ -109,7 +109,7 @@ textarea.control {
   width: 1.15rem;
   height: 1.15rem;
   margin-top: 0.2rem;
-  accent-color: var(--nl-forest);
+  accent-color: var(--nl-accent);
 }
 
 .field--check label {
@@ -127,7 +127,7 @@ textarea.control {
 
 .confirmation {
   padding: clamp(2rem, 4vw, 3rem);
-  border: 1px solid var(--nl-forest);
+  border: 1px solid var(--nl-accent);
   border-radius: var(--nl-radius);
   background: var(--nl-surface);
   text-align: center;

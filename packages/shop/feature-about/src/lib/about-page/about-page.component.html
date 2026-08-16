@@ -1,6 +1,7 @@
 <section class="page-head">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       [level]="1"
       eyebrow="About the studio"
       title="We started Northlight because good houses were photographing badly"
@@ -13,7 +14,7 @@
 
 <section class="section">
   <div class="container story">
-    <div class="story__media">
+    <div class="story__media" shopReveal="left">
       <img
         ngSrc="/images/about-studio.svg"
         width="1200"
@@ -22,7 +23,7 @@
         alt="A staged interior from the Northlight studio, with a sofa, floor lamp, and framed art"
       />
     </div>
-    <div class="story__copy">
+    <div class="story__copy" shopReveal="right">
       <h2 class="story__title">A staging studio, not a furniture rental</h2>
       <p>
         Plenty of companies will drop furniture in a house. That is not the same as
@@ -47,13 +48,14 @@
 
 <section class="section section--surface">
   <div class="container">
-    <shop-stat-band [stats]="stats" />
+    <shop-stat-band [stats]="stats" shopReveal="up" />
   </div>
 </section>
 
 <section class="section section--tint">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="How we work"
       title="Four things we hold ourselves to"
     />
@@ -72,6 +74,7 @@
 <section class="section">
   <div class="container">
     <shop-section-heading
+      shopReveal="up"
       eyebrow="The team"
       title="Who you will actually be working with"
     />

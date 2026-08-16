@@ -1,4 +1,12 @@
-import { Component, computed, input, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  afterNextRender,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 
 /**
@@ -7,6 +15,10 @@ import { NgOptimizedImage } from '@angular/common';
  * The handle is a real `input[type=range]`, so it is keyboard operable and
  * announced correctly without any custom ARIA. The visible divider tracks its
  * value; the input itself is transparent and stretched across the image.
+ *
+ * With `scrub` enabled the reveal is additionally driven by scroll position
+ * while the figure is pinned on screen. Dragging or using the keyboard takes
+ * over immediately and permanently, so the control never fights the visitor.
  */
 @Component({
   selector: 'shop-before-after',
@@ -103,7 +115,7 @@ import { NgOptimizedImage } from '@angular/common';
       letter-spacing: 0.08em;
       text-transform: uppercase;
       background: rgb(255 255 255 / 0.92);
-      color: var(--nl-ink);
+      color: #23211e;
     }
 
     /* Fades in as the before side is revealed. --nl-reveal is unitless, so it
@@ -116,7 +128,7 @@ import { NgOptimizedImage } from '@angular/common';
     .tag--after {
       right: 1rem;
       background: var(--nl-forest);
-      color: #fff;
+      color: var(--nl-on-forest);
     }
 
     .divider {
@@ -140,7 +152,7 @@ import { NgOptimizedImage } from '@angular/common';
       height: 2.75rem;
       border-radius: 50%;
       background: #fff;
-      color: var(--nl-forest);
+      color: #2f5d50;
       box-shadow: 0 2px 10px rgb(0 0 0 / 0.28);
       transform: translate(-50%, -50%);
     }
@@ -194,12 +206,18 @@ import { NgOptimizedImage } from '@angular/common';
 
     @media (prefers-reduced-motion: no-preference) {
       .knob {
-        transition: outline-color 0.15s ease;
+        transition: outline-color 0.15s ease, transform 0.25s var(--nl-ease);
+      }
+
+      .frame:hover .knob {
+        transform: translate(-50%, -50%) scale(1.08);
       }
     }
   `,
 })
 export class BeforeAfterComponent {
+  private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+
   readonly beforeImage = input.required<string>();
   readonly afterImage = input.required<string>();
   readonly beforeAlt = input('The room before staging');
@@ -208,9 +226,14 @@ export class BeforeAfterComponent {
   readonly label = input<string>();
   /** Set on the first slider above the fold to preload its "after" image. */
   readonly priority = input(false);
+  /** Drives the reveal from scroll position while the figure is on screen. */
+  readonly scrub = input(false);
 
   private readonly pos = signal(50);
   readonly position = this.pos.asReadonly();
+
+  /** Set once the visitor drags or keys the slider; scroll stops driving it. */
+  private interacted = false;
 
   readonly sliderLabel = computed(
     () => this.label() ?? 'Drag to compare the room before and after staging'
@@ -218,7 +241,69 @@ export class BeforeAfterComponent {
 
   readonly valueText = computed(() => `${this.pos()}% before, ${100 - this.pos()}% after`);
 
+  constructor() {
+    afterNextRender(() => {
+      if (this.scrub()) {
+        this.startScrub();
+      }
+    });
+  }
+
   onInput(event: Event): void {
+    this.interacted = true;
     this.pos.set(Number((event.target as HTMLInputElement).value));
+  }
+
+  private startScrub(): void {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const element = this.host.nativeElement;
+
+    // While the figure is pinned its own rect stops moving, so progress has to
+    // be measured against the tall stage that provides the scroll room. Falls
+    // back to the figure itself when it is not inside a stage.
+    const stage = element.closest<HTMLElement>('[data-scrub-stage]');
+
+    let queued = false;
+
+    const update = () => {
+      queued = false;
+      if (this.interacted) {
+        return;
+      }
+
+      const viewport = window.innerHeight;
+      let raw: number;
+
+      if (stage) {
+        const rect = stage.getBoundingClientRect();
+        const scrollable = Math.max(stage.offsetHeight - viewport, 1);
+        raw = -rect.top / scrollable;
+      } else {
+        const rect = element.getBoundingClientRect();
+        const travel = rect.height + viewport;
+        raw = (viewport - rect.top) / travel;
+      }
+
+      // Leave a margin at each end so the wipe settles fully open before the
+      // stage releases, rather than still moving as the section scrolls away.
+      const eased = Math.min(Math.max((raw - 0.08) / 0.72, 0), 1);
+      this.pos.set(Math.round(eased * 100));
+    };
+
+    addEventListener(
+      'scroll',
+      () => {
+        if (!queued) {
+          queued = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+
+    update();
   }
 }

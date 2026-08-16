@@ -49,7 +49,7 @@
 
 .value {
   padding-top: 1.25rem;
-  border-top: 2px solid var(--nl-forest);
+  border-top: 2px solid var(--nl-accent);
 }
 
 .value__title {
@@ -94,7 +94,7 @@
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--nl-forest);
+  color: var(--nl-accent);
 }
 
 .member__bio {

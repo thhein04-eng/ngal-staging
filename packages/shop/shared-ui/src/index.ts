@@ -9,3 +9,12 @@ export * from './lib/stat-band/stat-band.component';
 export * from './lib/cta-banner/cta-banner.component';
 export * from './lib/loading-spinner/loading-spinner.component';
 export * from './lib/error-message/error-message.component';
+
+// Theme
+export * from './lib/theme/theme.service';
+export * from './lib/theme/theme-toggle.component';
+
+// Motion primitives
+export * from './lib/motion/reveal.directive';
+export * from './lib/motion/count-up.component';
+export * from './lib/motion/scroll-progress.component';

@@ -64,7 +64,7 @@ import { CompanyInfo, ServiceArea } from '@org/models';
   `,
   styles: `
     .footer {
-      background: var(--nl-ink);
+      background: var(--nl-cinema);
       color: rgb(255 255 255 / 0.75);
     }
 

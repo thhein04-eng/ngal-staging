@@ -25,6 +25,29 @@
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!--
+      Runs before first paint so the page never flashes the wrong theme, and so
+      reveal animations start hidden rather than snapping. If this script does
+      not run — JavaScript disabled, CSP block — `motion-ready` is absent and
+      every element renders in its final, visible state.
+    -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        try {
+          var saved = localStorage.getItem('nl-theme');
+          if (saved === 'light' || saved === 'dark') {
+            root.setAttribute('data-theme', saved);
+          }
+        } catch (e) {
+          /* Storage unavailable (private mode); fall back to the OS setting. */
+        }
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          root.classList.add('motion-ready');
+        }
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

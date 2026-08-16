@@ -2,13 +2,14 @@ import { Component, inject, signal } from '@angular/core';
 import { StagingContentService } from '@org/shop/data';
 import {
   CtaBannerComponent,
+  RevealDirective,
   SectionHeadingComponent,
   ServiceCardComponent,
 } from '@org/shop/shared-ui';
 
 @Component({
   selector: 'shop-services-page',
-  imports: [CtaBannerComponent, SectionHeadingComponent, ServiceCardComponent],
+  imports: [CtaBannerComponent, RevealDirective, SectionHeadingComponent, ServiceCardComponent],
   templateUrl: './services-page.component.html',
   styleUrl: './services-page.component.css',
 })
